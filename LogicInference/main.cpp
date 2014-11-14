@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 Varun Varadarajan. All rights reserved.
 //
 
-#include <iostream>
+#include "Input.h"
+
+using namespace std;
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+    Input input("/Users/varun/Documents/Artificial Intelligence/LogicInference/Input/input.txt");
     return 0;
 }
