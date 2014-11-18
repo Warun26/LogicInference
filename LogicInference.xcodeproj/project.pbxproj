@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B38EA7A1A1580C9009E9E41 /* KnowledgeBasedAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8B38EA781A1580C9009E9E41 /* KnowledgeBasedAgent.cpp */; };
 		8B6F435C1A140F3300273CA1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F435B1A140F3300273CA1 /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +25,8 @@
 
 /* Begin PBXFileReference section */
 		8B38EA771A14B221009E9E41 /* Input.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Input.h; sourceTree = "<group>"; };
+		8B38EA781A1580C9009E9E41 /* KnowledgeBasedAgent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KnowledgeBasedAgent.cpp; sourceTree = "<group>"; };
+		8B38EA791A1580C9009E9E41 /* KnowledgeBasedAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KnowledgeBasedAgent.h; sourceTree = "<group>"; };
 		8B6F43581A140F3300273CA1 /* LogicInference */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = LogicInference; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B6F435B1A140F3300273CA1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -60,6 +63,8 @@
 			children = (
 				8B6F435B1A140F3300273CA1 /* main.cpp */,
 				8B38EA771A14B221009E9E41 /* Input.h */,
+				8B38EA781A1580C9009E9E41 /* KnowledgeBasedAgent.cpp */,
+				8B38EA791A1580C9009E9E41 /* KnowledgeBasedAgent.h */,
 			);
 			path = LogicInference;
 			sourceTree = "<group>";
@@ -120,6 +125,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B38EA7A1A1580C9009E9E41 /* KnowledgeBasedAgent.cpp in Sources */,
 				8B6F435C1A140F3300273CA1 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
