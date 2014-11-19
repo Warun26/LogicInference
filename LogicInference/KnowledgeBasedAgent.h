@@ -45,7 +45,7 @@ class KnowLedgeBasedAgent
 private:
     int t;
     vector<Sentence> KnowledgeBase;
-    map<string, tuple<vector<int>, vector<int> > > predicateMap;
+    map<string, vector<int> > predicateMap;
     Sentence MakePerceptSentence(string);
     bool Unify(Predicate, Predicate, string&);
     string Substitute(string, string);

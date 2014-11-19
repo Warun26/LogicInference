@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		8B38EA7A1A1580C9009E9E41 /* KnowledgeBasedAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8B38EA781A1580C9009E9E41 /* KnowledgeBasedAgent.cpp */; };
-		8B6F435C1A140F3300273CA1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F435B1A140F3300273CA1 /* main.cpp */; };
+		8B6F435C1A140F3300273CA1 /* Agent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F435B1A140F3300273CA1 /* Agent.cpp */; };
+		8BE6EFF61A1C1DE100A20D27 /* makefile in Sources */ = {isa = PBXBuildFile; fileRef = 8BE6EFF51A1C1DE100A20D27 /* makefile */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,7 +29,8 @@
 		8B38EA781A1580C9009E9E41 /* KnowledgeBasedAgent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KnowledgeBasedAgent.cpp; sourceTree = "<group>"; };
 		8B38EA791A1580C9009E9E41 /* KnowledgeBasedAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KnowledgeBasedAgent.h; sourceTree = "<group>"; };
 		8B6F43581A140F3300273CA1 /* LogicInference */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = LogicInference; sourceTree = BUILT_PRODUCTS_DIR; };
-		8B6F435B1A140F3300273CA1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		8B6F435B1A140F3300273CA1 /* Agent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Agent.cpp; sourceTree = "<group>"; };
+		8BE6EFF51A1C1DE100A20D27 /* makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; name = makefile; path = LogicInference/makefile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +47,7 @@
 		8B6F434F1A140F3300273CA1 = {
 			isa = PBXGroup;
 			children = (
+				8BE6EFF51A1C1DE100A20D27 /* makefile */,
 				8B6F435A1A140F3300273CA1 /* LogicInference */,
 				8B6F43591A140F3300273CA1 /* Products */,
 			);
@@ -61,7 +64,7 @@
 		8B6F435A1A140F3300273CA1 /* LogicInference */ = {
 			isa = PBXGroup;
 			children = (
-				8B6F435B1A140F3300273CA1 /* main.cpp */,
+				8B6F435B1A140F3300273CA1 /* Agent.cpp */,
 				8B38EA771A14B221009E9E41 /* IO.h */,
 				8B38EA781A1580C9009E9E41 /* KnowledgeBasedAgent.cpp */,
 				8B38EA791A1580C9009E9E41 /* KnowledgeBasedAgent.h */,
@@ -126,7 +129,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B38EA7A1A1580C9009E9E41 /* KnowledgeBasedAgent.cpp in Sources */,
-				8B6F435C1A140F3300273CA1 /* main.cpp in Sources */,
+				8B6F435C1A140F3300273CA1 /* Agent.cpp in Sources */,
+				8BE6EFF61A1C1DE100A20D27 /* makefile in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

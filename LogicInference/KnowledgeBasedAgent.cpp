@@ -23,28 +23,11 @@ void KnowLedgeBasedAgent::Tell(string percept)
     {
         vector<int> conclusionId;
         conclusionId.push_back(t);
-        auto tuple = make_tuple(*new vector<int>(), conclusionId);
-        predicateMap[conclusion.name] = tuple;
+        predicateMap[conclusion.name] = conclusionId;
     }
     else
     {
-        get<1>(predicateMap[conclusion.name]).push_back(t);
-    }
-    vector<string>premise = sentence.GetPremise();
-    for (int i=0; i<premise.size(); i++)
-    {
-        Predicate p = TextParser::GetPredicate(premise[i]);
-        if (predicateMap.find(p.name) == predicateMap.end())
-        {
-            vector<int> premiseId;
-            premiseId.push_back(t);
-            auto tuple = make_tuple(premiseId, *new vector<int>());
-            predicateMap[p.name] = tuple;
-        }
-        else
-        {
-            get<0>(predicateMap[p.name]).push_back(t);
-        }
+        (predicateMap[conclusion.name]).push_back(t);
     }
 }
 
@@ -53,7 +36,7 @@ bool KnowLedgeBasedAgent::Ask(string query)
     Predicate p = TextParser::GetPredicate(query);
     if (predicateMap.find(p.name) != predicateMap.end())
     {
-        vector<int> conclusions = get<1>(predicateMap[p.name]);
+        vector<int> conclusions = predicateMap[p.name];
         for (int i=0; conclusions.size(); i++)
         {
             Sentence sentence = KnowledgeBase[conclusions[i]-1];
