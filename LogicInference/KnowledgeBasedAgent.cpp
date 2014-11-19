@@ -36,8 +36,9 @@ bool KnowLedgeBasedAgent::Ask(string query)
     Predicate p = TextParser::GetPredicate(query);
     if (predicateMap.find(p.name) != predicateMap.end())
     {
+        bool flag = true;
         vector<int> conclusions = predicateMap[p.name];
-        for (int i=0; conclusions.size(); i++)
+        for (int i=0; i < conclusions.size(); i++)
         {
             Sentence sentence = KnowledgeBase[conclusions[i]-1];
             string substitution = "";
@@ -51,11 +52,20 @@ bool KnowLedgeBasedAgent::Ask(string query)
                 {
                     string newQuery = Substitute(premise[j], substitution);
                     bool conjunctValidity = Ask(newQuery);
-                    if (!conjunctValidity) return false;
+                    if (!conjunctValidity)
+                    {
+                        flag = false;
+                        break;
+                    }
+                    else flag = true;
                 }
+                if (!flag) continue;
                 return true;
             }
+            else flag = false;
         }
+        if (flag) return true;
+        else return false;
         
     }
     return false;
@@ -108,7 +118,8 @@ bool KnowLedgeBasedAgent::Unify(Predicate p1, Predicate p2, string& substitution
             return true;
         }
     }
-    else if (p1.arg1.at(0) != 'x' && p1.arg2.at(0) != 'x' && p2.arg1.at(0) != 'x' && p2.arg2.at(0) != 'x') return true;
+    else if (p1.arg1.at(0) != 'x' && p1.arg2.at(0) != 'x' && p2.arg1.at(0) != 'x' && p2.arg2.at(0) != 'x' && !p1.arg1.compare(p2.arg1) && !p1.arg2.compare(p2.arg2))
+        return true;
     return false;
 }
 

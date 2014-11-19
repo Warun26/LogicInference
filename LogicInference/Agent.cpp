@@ -12,7 +12,7 @@
 using namespace std;
 
 int main(int argc, const char * argv[]) {
-    //Input input("/Users/varun/Documents/Artificial Intelligence/LogicInference/Input/input.txt");
+    //Input input("/Users/varun/Documents/Artificial Intelligence/LogicInference/Input/input1.txt");
     Input input;
     vector<string>sentences = input.GetSentenceList();
     KnowLedgeBasedAgent agent = *new KnowLedgeBasedAgent();
