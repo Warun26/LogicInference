@@ -20,6 +20,11 @@ struct Predicate
     string name;
     string arg1;
     string arg2;
+    bool equals(Predicate p)
+    {
+        if(!this->name.compare(p.name) && !this->arg1.compare(p.arg1) && !this->arg2.compare(p.arg2)) return true;
+        return false;
+    }
 };
 
 class Sentence
@@ -42,6 +47,8 @@ private:
     vector<Sentence> KnowledgeBase;
     map<string, tuple<vector<int>, vector<int> > > predicateMap;
     Sentence MakePerceptSentence(string);
+    bool Unify(Predicate, Predicate, string&);
+    string Substitute(string, string);
 public:
     KnowLedgeBasedAgent();
     void Tell(string);

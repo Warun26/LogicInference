@@ -48,7 +48,86 @@ void KnowLedgeBasedAgent::Tell(string percept)
     }
 }
 
+bool KnowLedgeBasedAgent::Ask(string query)
+{
+    Predicate p = TextParser::GetPredicate(query);
+    if (predicateMap.find(p.name) != predicateMap.end())
+    {
+        vector<int> conclusions = get<1>(predicateMap[p.name]);
+        for (int i=0; conclusions.size(); i++)
+        {
+            Sentence sentence = KnowledgeBase[conclusions[i]-1];
+            string substitution = "";
+            Predicate s = TextParser::GetPredicate(sentence.GetConclusion());
+            if(s.equals(p)) return true;
+            bool unificationResult = Unify(p, s, substitution);
+            if (unificationResult)
+            {
+                vector<string> premise = sentence.GetPremise();
+                for (int j=0; j<premise.size(); j++)
+                {
+                    string newQuery = Substitute(premise[j], substitution);
+                    bool conjunctValidity = Ask(newQuery);
+                    if (!conjunctValidity) return false;
+                }
+                return true;
+            }
+        }
+        
+    }
+    return false;
+}
 
+string KnowLedgeBasedAgent::Substitute(string originalString, string substitution)
+{
+    string term = *new string(originalString);
+    unsigned long index = term.find('x');
+    if (index == string::npos)
+    {
+        return originalString;
+    }
+    term.replace(index, 1, substitution);
+    return term;
+}
+
+bool KnowLedgeBasedAgent::Unify(Predicate p1, Predicate p2, string& substitution)
+{
+    if (p1.arg1.empty() && p2.arg1.empty())
+    {
+        if (p1.arg2.at(0) != 'x' && p2.arg2.at(0) != 'x' && p1.arg2.compare(p2.arg2)) return false;
+        else if(p1.arg2.at(0) == 'x') substitution = *new string(p2.arg2);
+        else if(p2.arg2.at(0) == 'x') substitution = *new string(p1.arg2);
+        return true;
+    }
+    else if (p1.arg1.at(0) == 'x' || p1.arg2.at(0) == 'x')
+    {
+        if (p1.arg1.at(0) == 'x' && !p1.arg2.compare(p2.arg2))
+        {
+            substitution = *new string(p2.arg1);
+            return true;
+        }
+        else if (p1.arg2.at(0) == 'x' && !p1.arg1.compare(p2.arg1))
+        {
+            substitution = *new string(p2.arg2);
+            return true;
+        }
+    }
+    else if (p2.arg1.at(0) == 'x' || p2.arg2.at(0) == 'x')
+    {
+        if (p2.arg1.at(0) == 'x' && !p2.arg2.compare(p1.arg2))
+        {
+            substitution = *new string(p1.arg1);
+            return true;
+        }
+        else if (p2.arg2.at(0) == 'x' && !p2.arg1.compare(p1.arg1))
+        {
+            substitution = *new string(p1.arg2);
+            return true;
+        }
+    }
+    else if (p1.arg1.at(0) != 'x' && p1.arg2.at(0) != 'x' && p2.arg1.at(0) != 'x' && p2.arg2.at(0) != 'x') return true;
+    return false;
+}
 
 Sentence KnowLedgeBasedAgent::MakePerceptSentence(string s)
 {
