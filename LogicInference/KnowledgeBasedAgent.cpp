@@ -24,14 +24,31 @@ void KnowLedgeBasedAgent::Tell(string percept)
         vector<int> conclusionId;
         conclusionId.push_back(t);
         predicateMap[conclusion.name] = conclusionId;
-    }
+        if (conclusion.arg1[0] != 'x' && find(constants.begin(), constants.end(), conclusion.arg1) == constants.end())
+            constants.push_back(conclusion.arg1);
+        if (conclusion.arg2[0] != 'x' && find(constants.begin(), constants.end(), conclusion.arg2) == constants.end())
+            constants.push_back(conclusion.arg2);
+        }
     else
     {
         (predicateMap[conclusion.name]).push_back(t);
+        if (conclusion.arg1[0] != 'x' && find(constants.begin(), constants.end(), conclusion.arg1) == constants.end())
+            constants.push_back(conclusion.arg1);
+        if (conclusion.arg2[0] != 'x' && find(constants.begin(), constants.end(), conclusion.arg2) == constants.end())
+            constants.push_back(conclusion.arg2);
+    }
+    vector<string> premises = sentence.GetPremise();
+    for (int i=0; i<premises.size(); i++)
+    {
+        Predicate premise = TextParser::GetPredicate(premises[i]);
+        if (premise.arg1[0] != 'x' && find(constants.begin(), constants.end(), premise.arg1) == constants.end())
+            constants.push_back(premise.arg1);
+        if (premise.arg2[0] != 'x' && find(constants.begin(), constants.end(), premise.arg2) == constants.end())
+            constants.push_back(premise.arg2);
     }
 }
 
-bool KnowLedgeBasedAgent::Ask(string query)
+/*bool KnowLedgeBasedAgent::Ask(string query)
 {
     Predicate p = TextParser::GetPredicate(query);
     if (predicateMap.find(p.name) != predicateMap.end())
@@ -43,7 +60,10 @@ bool KnowLedgeBasedAgent::Ask(string query)
             Sentence sentence = KnowledgeBase[conclusions[i]-1];
             string substitution = "";
             Predicate s = TextParser::GetPredicate(sentence.GetConclusion());
-            if(s.equals(p)) return true;
+            if(s.equals(p))
+            {
+                return true;
+            }
             bool unificationResult = Unify(p, s, substitution);
             if (unificationResult)
             {
@@ -69,6 +89,52 @@ bool KnowLedgeBasedAgent::Ask(string query)
         
     }
     return false;
+}*/
+
+bool KnowLedgeBasedAgent::Ask(string query)
+{
+    string substitution = "";
+    return askOr(query, substitution);
+}
+
+bool KnowLedgeBasedAgent::askOr(string query, string& theta)
+{
+    Predicate p = TextParser::GetPredicate(query);
+    if (predicateMap.find(p.name) != predicateMap.end())
+    {
+        vector<int>rules = predicateMap[p.name];
+        for (int ruleIterator = 0; ruleIterator < rules.size(); ruleIterator++)
+        {
+            Sentence sentence = KnowledgeBase[rules[ruleIterator]-1];
+            vector<string> premise = sentence.GetPremise();
+            string conclusion = sentence.GetConclusion();
+            Predicate q = TextParser::GetPredicate(conclusion);
+            string substitution = "";
+            bool unificationResult = Unify(p, q, substitution);
+            if (!unificationResult) continue;
+            theta = *new string(substitution);
+            bool validity = askAnd(premise, substitution);
+            if (validity) return true;
+        }
+        return false;
+    }
+    else return false;
+}
+
+bool KnowLedgeBasedAgent::askAnd(vector<string> conjuncts, string substitution)
+{
+    if (conjuncts.size() == 0) return true;
+    string first = conjuncts[0];
+    vector<string> rest = *new vector<string>(conjuncts.begin()+1, conjuncts.end());
+    if (substitution.compare(""))
+        first = Substitute(first, substitution);
+    if (askOr(first, substitution))
+    {
+        bool validity = askAnd(rest, substitution);
+        if (!validity) return false;
+    }
+    else return false;
+    return true;
 }
 
 string KnowLedgeBasedAgent::Substitute(string originalString, string substitution)
@@ -80,6 +146,8 @@ string KnowLedgeBasedAgent::Substitute(string originalString, string substitutio
         return originalString;
     }
     term.replace(index, 1, substitution);
+    index = term.find('x', index);
+    
     return term;
 }
 
