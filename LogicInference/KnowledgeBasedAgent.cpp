@@ -146,8 +146,12 @@ string KnowLedgeBasedAgent::Substitute(string originalString, string substitutio
         return originalString;
     }
     term.replace(index, 1, substitution);
-    index = term.find('x', index);
-    
+    index = term.find('x', index+1);
+    if (index == string::npos)
+    {
+        return term;
+    }
+    term.replace(index, 1, substitution);
     return term;
 }
 
@@ -172,6 +176,11 @@ bool KnowLedgeBasedAgent::Unify(Predicate p1, Predicate p2, string& substitution
             substitution = *new string(p2.arg2);
             return true;
         }
+        else if(p1.arg1.at(0) == 'x' && p1.arg2.at(0) == 'x')
+        {
+            substitution = *new string(p2.arg1);
+            return true;
+        }
     }
     else if (p2.arg1.at(0) == 'x' || p2.arg2.at(0) == 'x')
     {
@@ -183,6 +192,11 @@ bool KnowLedgeBasedAgent::Unify(Predicate p1, Predicate p2, string& substitution
         else if (p2.arg2.at(0) == 'x' && !p2.arg1.compare(p1.arg1))
         {
             substitution = *new string(p1.arg2);
+            return true;
+        }
+        else if(p2.arg1.at(0) == 'x' && p2.arg2.at(0) == 'x')
+        {
+            substitution = *new string(p1.arg1);
             return true;
         }
     }
