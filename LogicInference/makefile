@@ -1,5 +1,5 @@
-agent: agent.cpp KnowledgeBasedAgent.cpp KnowledgeBasedAgent.h IO.h
-	g++ agent.cpp KnowledgeBasedAgent.cpp -o agent
+agent: Agent.cpp KnowledgeBasedAgent.cpp KnowledgeBasedAgent.h IO.h
+	g++ Agent.cpp KnowledgeBasedAgent.cpp -o agent
 
 run: agent
 	./agent
