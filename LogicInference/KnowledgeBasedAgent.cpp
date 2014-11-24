@@ -179,21 +179,62 @@ bool KnowLedgeBasedAgent::Unify(Predicate p1, Predicate p2, string& substitution
         else if(p2.arg2.at(0) == 'x') substitution = *new string(p1.arg2);
         return true;
     }
+    else if(p1.arg1.at(0) == 'x' && p1.arg2.at(0) == 'x' && p2.arg1.at(0) == 'x' && p2.arg2.at(0) == 'x') return true;
     else if (p1.arg1.at(0) == 'x' || p1.arg2.at(0) == 'x')
     {
         if (p1.arg1.at(0) == 'x' && !p1.arg2.compare(p2.arg2))
         {
+            if (p2.arg1.at(0) == 'x') return true;
             substitution = *new string(p2.arg1);
+            return true;
+        }
+        else if(p1.arg1.at(0) == 'x' && p2.arg2.at(0) == 'x' && p1.arg2.at(0) != 'x' && !p1.arg2.compare(p2.arg1))
+        {
+            substitution = *new string(p1.arg2);
             return true;
         }
         else if (p1.arg2.at(0) == 'x' && !p1.arg1.compare(p2.arg1))
         {
+            if (p2.arg2.at(0) == 'x') return true;
             substitution = *new string(p2.arg2);
+            return true;
+        }
+        else if(p1.arg2.at(0) == 'x' && p2.arg1.at(0) == 'x' && p1.arg1.at(0) != 'x' && !p1.arg1.compare(p2.arg2))
+        {
+            substitution = *new string(p1.arg1);
             return true;
         }
         else if (p1.arg1.at(0) == 'x' && p1.arg2.at(0) == 'x')
         {
-            substitution = *new string(p2.arg2);
+            if (!p2.arg1.compare(p2.arg2))
+            {
+                substitution = *new string(p2.arg2);
+                return true;
+            }
+            else if(p2.arg1.at(0) == 'x')
+            {
+                substitution = *new string(p2.arg2);
+                return true;
+            }
+            else if(p2.arg2.at(0) == 'x')
+            {
+                substitution = *new string(p2.arg1);
+                return true;
+            }
+            return false;
+        }
+        else if(p2.arg1.at(0) == 'x' && p2.arg2.at(0) == 'x')
+        {
+            if(p1.arg1.at(0) == 'x' && p1.arg2.at(0) != 'x')
+            {
+                substitution = *new string(p1.arg2);
+                return true;
+            }
+            else if(p1.arg1.at(0) != 'x' && p1.arg2.at(0) == 'x')
+            {
+                substitution = *new string(p1.arg1);
+                return true;
+            }
             return false;
         }
     }
@@ -211,7 +252,21 @@ bool KnowLedgeBasedAgent::Unify(Predicate p1, Predicate p2, string& substitution
         }
         else if (p2.arg1.at(0) == 'x' && p2.arg2.at(0) == 'x')
         {
-            substitution = *new string(p1.arg2);
+            if(!p1.arg1.compare(p1.arg2))
+            {
+                substitution = *new string(p1.arg2);
+                return true;
+            }
+            else if(p1.arg1.at(0) == 'x')
+            {
+                substitution = *new string(p1.arg2);
+                return true;
+            }
+            else if(p1.arg2.at(0) == 'x')
+            {
+                substitution = *new string(p1.arg1);
+                return true;
+            }
             return false;
         }
     }

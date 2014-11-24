@@ -12,8 +12,8 @@
 using namespace std;
 
 int main(int argc, const char * argv[]) {
-    Input input("/Users/varun/Documents/Artificial Intelligence/LogicInference/Input/input11.txt");
-    //Input input;
+    //Input input("/Users/varun/Documents/Artificial Intelligence/LogicInference/Input/input14.txt");
+    Input input;
     vector<string>sentences = input.GetSentenceList();
     KnowLedgeBasedAgent agent = *new KnowLedgeBasedAgent();
     int numberOfSentences = input.GetNumberOfSentences();
