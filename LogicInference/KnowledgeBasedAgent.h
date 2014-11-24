@@ -50,8 +50,8 @@ private:
     bool Unify(Predicate, Predicate, string&);
     string Substitute(string, string);
     vector<string> constants;
-    bool askOr(string,string&);
-    bool askAnd(vector<string>, string);
+    bool askOr(string,vector<string>&);
+    bool askAnd(vector<string>, vector<string>);
 public:
     KnowLedgeBasedAgent();
     void Tell(string);

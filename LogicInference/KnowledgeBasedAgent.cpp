@@ -93,16 +93,17 @@ void KnowLedgeBasedAgent::Tell(string percept)
 
 bool KnowLedgeBasedAgent::Ask(string query)
 {
-    string substitution = "";
+    vector<string> substitution;
     return askOr(query, substitution);
 }
 
-bool KnowLedgeBasedAgent::askOr(string query, string& theta)
+bool KnowLedgeBasedAgent::askOr(string query, vector<string>& theta)
 {
     Predicate p = TextParser::GetPredicate(query);
     if (predicateMap.find(p.name) != predicateMap.end())
     {
         vector<int>rules = predicateMap[p.name];
+        bool flag = false;
         for (int ruleIterator = 0; ruleIterator < rules.size(); ruleIterator++)
         {
             Sentence sentence = KnowledgeBase[rules[ruleIterator]-1];
@@ -112,29 +113,43 @@ bool KnowLedgeBasedAgent::askOr(string query, string& theta)
             string substitution = "";
             bool unificationResult = Unify(p, q, substitution);
             if (!unificationResult) continue;
-            theta = *new string(substitution);
-            bool validity = askAnd(premise, substitution);
-            if (validity) return true;
+            if (find(theta.begin(), theta.end(), substitution) == theta.end())
+            {
+                theta.push_back(*new string(substitution));
+            }
+            bool validity = askAnd(premise, theta);
+            if (validity) flag = true;
+            else flag = false;
         }
-        return false;
+        if(flag) return true;
+        else return false;
     }
     else return false;
 }
 
-bool KnowLedgeBasedAgent::askAnd(vector<string> conjuncts, string substitution)
+bool KnowLedgeBasedAgent::askAnd(vector<string> conjuncts, vector<string> substitution)
 {
     if (conjuncts.size() == 0) return true;
     string first = conjuncts[0];
+    string newFirst = first;
     vector<string> rest = *new vector<string>(conjuncts.begin()+1, conjuncts.end());
-    if (substitution.compare(""))
-        first = Substitute(first, substitution);
-    if (askOr(first, substitution))
+    for(long i=0; i<substitution.size(); i++)
     {
-        bool validity = askAnd(rest, substitution);
-        if (!validity) return false;
+        if (substitution[i].compare(""))
+        {
+            newFirst = Substitute(first, substitution[i]);
+        }
+        else substitution.erase(substitution.begin()+i);
+        if (askOr(newFirst, substitution))
+        {
+            bool validity = askAnd(rest, substitution);
+            if (!validity) continue;
+            else return true;
+        }
+        else continue;
+        //return true;
     }
-    else return false;
-    return true;
+    return false;
 }
 
 string KnowLedgeBasedAgent::Substitute(string originalString, string substitution)
@@ -176,10 +191,10 @@ bool KnowLedgeBasedAgent::Unify(Predicate p1, Predicate p2, string& substitution
             substitution = *new string(p2.arg2);
             return true;
         }
-        else if(p1.arg1.at(0) == 'x' && p1.arg2.at(0) == 'x')
+        else if (p1.arg1.at(0) == 'x' && p1.arg2.at(0) == 'x')
         {
-            substitution = *new string(p2.arg1);
-            return true;
+            substitution = *new string(p2.arg2);
+            return false;
         }
     }
     else if (p2.arg1.at(0) == 'x' || p2.arg2.at(0) == 'x')
@@ -194,10 +209,10 @@ bool KnowLedgeBasedAgent::Unify(Predicate p1, Predicate p2, string& substitution
             substitution = *new string(p1.arg2);
             return true;
         }
-        else if(p2.arg1.at(0) == 'x' && p2.arg2.at(0) == 'x')
+        else if (p2.arg1.at(0) == 'x' && p2.arg2.at(0) == 'x')
         {
-            substitution = *new string(p1.arg1);
-            return true;
+            substitution = *new string(p1.arg2);
+            return false;
         }
     }
     else if (p1.arg1.at(0) != 'x' && p1.arg2.at(0) != 'x' && p2.arg1.at(0) != 'x' && p2.arg2.at(0) != 'x' && !p1.arg1.compare(p2.arg1) && !p1.arg2.compare(p2.arg2))
